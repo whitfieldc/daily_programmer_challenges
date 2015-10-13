@@ -5,7 +5,7 @@ defmodule PrintFiftyTetris do
   def print_random_order(letters, n) when n <= 7 do
     letters
     |> Enum.shuffle
-    |> Enum.slice((0..n-1))
+    |> Enum.slice(0..n-1)
     |> Enum.reduce(fn(first, second) -> first <> second end)
     |> IO.puts
   end
