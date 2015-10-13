@@ -1,12 +1,23 @@
 pieces = ["O", "I", "S", "Z", "L", "J", "T"]
 
-times = [:a, :b, :c, :d, :e, :f, :g]
+defmodule PrintFiftyTetris do
 
-times
-  |> Enum.map(fn(spot) ->
-    pieces
+  def print_random_order(letters, n) when n <= 7 do
+    letters
+    |> Enum.shuffle
+    |> Enum.slice((0..n-1))
+    |> Enum.reduce(fn(first, second) -> first <> second end)
+    |> IO.puts
+  end
+
+  def print_random_order(letters, n) do
+    letters
     |> Enum.shuffle
     |> Enum.reduce(fn(first, second) -> first <> second end)
-  end)
-  |> Enum.reduce(fn(first, second) -> first <> second end)
-  |> IO.puts
+    |> IO.puts
+    print_random_order(letters, n-7)
+  end
+
+end
+
+PrintFiftyTetris.print_random_order(pieces, 50)
