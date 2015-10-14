@@ -7,7 +7,7 @@ defmodule PrintFiftyTetris do
     |> Enum.shuffle
     |> Enum.slice(0..n-1)
     |> Enum.reduce(fn(first, second) -> first <> second end)
-    |> concat_two_strings(previous)##concat current with previous
+    |> _concat_two_strings(previous)##concat current with previous
     |> IO.puts
   end
 
@@ -15,11 +15,11 @@ defmodule PrintFiftyTetris do
     letters
     |> Enum.shuffle
     |> Enum.reduce(fn(first, second) -> first <> second end)
-    |> concat_two_strings(previous)
+    |> _concat_two_strings(previous)
     |> print_random_order(letters, n-7)
   end
 
-  def concat_two_strings(first, second)do
+  defp _concat_two_strings(first, second)do
     first <> second
   end
 
