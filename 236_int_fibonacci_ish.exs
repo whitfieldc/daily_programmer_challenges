@@ -13,16 +13,32 @@ defmodule FibonacciIsh do
     |>:math.sqrt
     |>Float.ceil
     |>Kernel.trunc
-    (1..root)
+    (root..2)
   end
 
   def find_factors(num) do
-    range = get_range_from_one_to_sqrt(num)
+    num
+    |>get_range_from_one_to_sqrt
     |> Stream.filter(fn(x) -> rem(num, x) == 0 end)
     |> Enum.to_list
+  end
+
+  def is_fibonacci?(candidate) do
+    multiplied = 5*candidate*candidate
+    plus = :math.sqrt(multiplied + 4)
+    minus = :math.sqrt(multiplied - 4)
+    (plus == round(plus)) || (minus == round(minus))
+  end
+
+  def determine_fib_ish_start(num) do
+    factors = find_factors(num)
+    |> Enum.map(fn(x) -> Kernel.trunc(num/x) end)
+    |> Enum.find(num, fn(x) -> is_fibonacci?(x)end)
+    |> IO.inspect
   end
 
 end
 
 # FibonacciIsh.get_range_from_one_to_sqrt(9)
-FibonacciIsh.find_factors(12)
+FibonacciIsh.determine_fib_ish_start(9)
+FibonacciIsh.determine_fib_ish_start(84)
