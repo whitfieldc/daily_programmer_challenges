@@ -30,15 +30,27 @@ defmodule FibonacciIsh do
     (plus == round(plus)) || (minus == round(minus))
   end
 
-  def determine_fib_ish_start(num) do
-    factors = find_factors(num)
-    |> Enum.map(fn(x) -> Kernel.trunc(num/x) end)
-    |> Enum.find(num, fn(x) -> is_fibonacci?(x)end)
-    |> IO.inspect
+  def determine_fib_factor_and_counterpart(num) do
+    if is_fibonacci?(num) do
+      [1, num]
+    else
+      counterpart = find_factors(num)
+      |> Enum.map(fn(x) -> Kernel.trunc(num/x) end)
+      |> Enum.find(num, fn(x) -> is_fibonacci?(x)end)
+      if counterpart == num do
+        counterpart
+      else
+        [Kernel.trunc(num/counterpart), counterpart]
+      end
+    end
   end
+
+  # def print_fib_ish_string(num) do
+
+  # end
 
 end
 
 # FibonacciIsh.get_range_from_one_to_sqrt(9)
-FibonacciIsh.determine_fib_ish_start(9)
-FibonacciIsh.determine_fib_ish_start(84)
+FibonacciIsh.determine_fib_factor_and_counterpart(21)
+FibonacciIsh.determine_fib_factor_and_counterpart(84)
