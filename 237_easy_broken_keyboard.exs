@@ -1,7 +1,4 @@
-# case File.read("237_easy_dictionary.txt") do
-#   {:ok, body} ->  IO.puts(body)
-#   {:error, reason} -> IO.puts reason
-# end
+
 
 ## split string at each newline or recursively split and categorize?
 
@@ -12,7 +9,15 @@
 defmodule BrokenKeyboard do
 
   def build_longest_word_by_unique_letters_map(dictionary_string) do
-
+    word_and_dict = dictionary_string
+      |> String.slice(1..-1)
+      |> String.split("\r\n", parts: 2)
+      |> Enum.to_list
+      |> hd()
+    # current_word = hd(word_and_dict)
+    current_key = atomize_sorted_uniques(word_and_dict)
+    current_map = add_to_map_or_discard(current_key, word_and_dict, %{})
+    IO.puts(current_map)
   end
 
   def atomize_sorted_uniques(word) do
@@ -22,7 +27,6 @@ defmodule BrokenKeyboard do
     |> Enum.sort
     |> Enum.join
     |> String.to_atom
-    |> IO.inspect
   end
 
   def add_to_map_or_discard(atom_key, candidate, master_map) do
@@ -34,3 +38,15 @@ defmodule BrokenKeyboard do
   end
 
 end
+
+case File.read("237_easy_dictionary.txt") do
+  {:ok, body} -> BrokenKeyboard.build_longest_word_by_unique_letters_map(body)
+
+  {:error, reason} -> IO.puts reason
+end
+
+# "\r\nzymurgy\r\nzyzzyva\r\nzyzzyvas"
+#                   |> String.slice(1..-1)
+#                   |> String.split("\r\n", parts: 2)
+#                   |> hd()
+#                   |> IO.inspect
