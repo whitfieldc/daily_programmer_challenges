@@ -28,8 +28,7 @@ defmodule BrokenKeyboard do
   def add_to_map_or_discard(atom_key, candidate, master_map) do
     unless String.length(master_map[atom_key]) > String.length(candidate) do
       new_master_map = master_map
-      |> Map.put_new(atom_key, candidate)
-      |> IO.inspect
+      |> Map.put(atom_key, candidate)
     end
     new_master_map || master_map
   end
