@@ -9,15 +9,12 @@
 defmodule BrokenKeyboard do
 
   def build_longest_word_by_unique_letters_map(dictionary_string) do
-    word_and_dict = dictionary_string
+    [current_word | remaining_dictionary] = dictionary_string
       |> String.slice(1..-1)
       |> String.split("\r\n", parts: 2)
-      |> Enum.to_list
-      |> hd()
-    # current_word = hd(word_and_dict)
-    current_key = atomize_sorted_uniques(word_and_dict)
-    current_map = add_to_map_or_discard(current_key, word_and_dict, %{})
-    IO.puts(current_map)
+    current_key = atomize_sorted_uniques(current_word)
+    current_map = add_to_map_or_discard(current_key, current_word, Map.new)
+    IO.inspect(current_map)
   end
 
   def atomize_sorted_uniques(word) do
@@ -30,12 +27,19 @@ defmodule BrokenKeyboard do
   end
 
   def add_to_map_or_discard(atom_key, candidate, master_map) do
-    ## CHECK FOR NIL MAP
-    unless String.length(master_map[atom_key]) > String.length(candidate) do
-      new_master_map = master_map
-      |> Map.put(atom_key, candidate)
+    cond do
+      Map.keys(master_map) == 0 ->
+        new_master_map = master_map
+        |> Map.put(atom_key, candidate)
+      !(master_map[atom_key]) ->
+        new_master_map = master_map
+        |> Map.put(atom_key, candidate)
+      (String.length(master_map[atom_key]) > String.length(candidate)) ->
+        new_master_map = master_map
+        |> Map.put(atom_key, candidate)
+      true ->
+        master_map
     end
-    new_master_map || master_map
   end
 
 end
