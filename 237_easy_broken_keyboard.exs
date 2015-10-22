@@ -30,6 +30,7 @@ defmodule BrokenKeyboard do
   end
 
   def add_to_map_or_discard(atom_key, candidate, master_map) do
+    ## CHECK FOR NIL MAP
     unless String.length(master_map[atom_key]) > String.length(candidate) do
       new_master_map = master_map
       |> Map.put(atom_key, candidate)
