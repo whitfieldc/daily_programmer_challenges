@@ -8,13 +8,13 @@
 ## break down input words same way and look em up by their unique :atom
 defmodule BrokenKeyboard do
 
-  def build_longest_word_by_unique_letters_map(dictionary_string, previous_map) when (dictionary_string == []) do
+  def build_longest_word_by_unique_letters_map(words_string_in_list, previous_map) when (words_string_in_list == []) do
     IO.inspect previous_map
   end
 
-  def build_longest_word_by_unique_letters_map(dictionary_string, previous_map \\ Map.new) do
-    [current_word | remaining_dictionary] = hd(dictionary_string)
-      |> String.slice(1..-1)
+  def build_longest_word_by_unique_letters_map(words_string_in_list, previous_map \\ Map.new) do
+    [current_word | remaining_dictionary] = words_string_in_list
+      |> hd()
       |> String.split("\r\n", parts: 2)
     current_key = atomize_sorted_uniques(current_word)
     current_map = add_to_map_or_discard(current_key, current_word, previous_map)
@@ -33,13 +33,13 @@ defmodule BrokenKeyboard do
   def add_to_map_or_discard(atom_key, candidate, master_map) do
     cond do
       Map.keys(master_map) == 0 ->
-        new_master_map = master_map
+        master_map
         |> Map.put(atom_key, candidate)
       !(master_map[atom_key]) ->
-        new_master_map = master_map
+        master_map
         |> Map.put(atom_key, candidate)
       (String.length(master_map[atom_key]) > String.length(candidate)) ->
-        new_master_map = master_map
+        master_map
         |> Map.put(atom_key, candidate)
       true ->
         master_map
