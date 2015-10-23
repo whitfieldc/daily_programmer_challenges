@@ -8,13 +8,17 @@
 ## break down input words same way and look em up by their unique :atom
 defmodule BrokenKeyboard do
 
-  def build_longest_word_by_unique_letters_map(dictionary_string) do
-    [current_word | remaining_dictionary] = dictionary_string
+  def build_longest_word_by_unique_letters_map(dictionary_string, previous_map) when (dictionary_string == []) do
+    IO.inspect previous_map
+  end
+
+  def build_longest_word_by_unique_letters_map(dictionary_string, previous_map \\ Map.new) do
+    [current_word | remaining_dictionary] = hd(dictionary_string)
       |> String.slice(1..-1)
       |> String.split("\r\n", parts: 2)
     current_key = atomize_sorted_uniques(current_word)
-    current_map = add_to_map_or_discard(current_key, current_word, Map.new)
-    IO.inspect(current_map)
+    current_map = add_to_map_or_discard(current_key, current_word, previous_map)
+    build_longest_word_by_unique_letters_map(remaining_dictionary, current_map)
   end
 
   def atomize_sorted_uniques(word) do
@@ -44,8 +48,8 @@ defmodule BrokenKeyboard do
 
 end
 
-case File.read("237_easy_dictionary.txt") do
-  {:ok, body} -> BrokenKeyboard.build_longest_word_by_unique_letters_map(body)
+case File.read("237_easy_dictionary_sample.txt") do
+  {:ok, body} -> BrokenKeyboard.build_longest_word_by_unique_letters_map([body])
 
   {:error, reason} -> IO.puts reason
 end
