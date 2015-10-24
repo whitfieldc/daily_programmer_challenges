@@ -9,7 +9,8 @@
 defmodule BrokenKeyboard do
 
   def build_longest_word_by_unique_letters_map(words_string_in_list, previous_map) when (words_string_in_list == []) do
-    IO.inspect previous_map
+    # IO.inspect previous_map
+    previous_map
   end
 
   def build_longest_word_by_unique_letters_map(words_string_in_list, previous_map \\ Map.new) do
@@ -38,7 +39,7 @@ defmodule BrokenKeyboard do
       !(master_map[atom_key]) ->
         master_map
         |> Map.put(atom_key, candidate)
-      (String.length(master_map[atom_key]) > String.length(candidate)) ->
+      (String.length(master_map[atom_key]) < String.length(candidate)) ->
         master_map
         |> Map.put(atom_key, candidate)
       true ->
@@ -46,10 +47,17 @@ defmodule BrokenKeyboard do
     end
   end
 
+  def find_longest_words_for_list(list, dictionary_by_letters) do
+    list
+    |> Enum.map(fn(word) -> dictionary_by_letters[atomize_sorted_uniques(word)] end)
+  end
+
 end
 
-case File.read("237_easy_dictionary_sample.txt") do
-  {:ok, body} -> BrokenKeyboard.build_longest_word_by_unique_letters_map([body])
+case File.read("237_easy_dictionary.txt") do
+  {:ok, body} ->
+    map = BrokenKeyboard.build_longest_word_by_unique_letters_map([body])
+    IO.inspect(BrokenKeyboard.find_longest_words_for_list(["edcf", "bnik", "poil", "vybu"], map))
 
   {:error, reason} -> IO.puts reason
 end
